@@ -1,1 +1,1 @@
-window.history.pushState("", "", '/moderator'); 
+// window.history.pushState("", "", '/moderator'); 

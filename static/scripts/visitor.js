@@ -1,4 +1,6 @@
-window.history.pushState("", "", '/visitor');
+// window.history.pushState("", "", '/visitor');
+const socket = io();
+
 window.addEventListener('load', init)
 function init(){
     const questions = document.querySelectorAll('.questions')
@@ -27,20 +29,45 @@ function nextQuestion(){
     }
     classChange(questions1, setting1)
     classChange(questions2, setting2)
-    classChange(setNext, setting3)
+    if(setNext!==null){
+        classChange(setNext, setting3)
+    }
     setChoice(this)
 }
 
 function setChoice(el){
     const aside = document.querySelector('aside')
     const userInput = el.parentElement.querySelectorAll('input')
+    console.log(el.parentElement)
+    console.log(userInput.length)
+    if(userInput.length===0){
+        const select = el.parentElement.querySelector('select')
+        const value = select.value
+        const name = select.name
+        newElement = `
+                    <button class='user-input'>
+                        ${value} X
+                    </button>
+                `
+        const container =  aside.querySelector(`.${name}`)
+        container.insertAdjacentHTML('beforeend', newElement)
+    }
     userInput.forEach(input=>{
-        if(input.checked){
-            const newElement = `
-                <button class='user-input'>
-                    ${input.id} X
-                </button>
-            `
+        if(input.checked || input.type === 'text'){
+            let newElement = ''
+            if(input.type === 'text'){
+                newElement = `
+                    <button class='user-input'>
+                        ${input.value} X
+                    </button>
+                `    
+            }else{
+                newElement = `
+                    <button class='user-input'>
+                        ${input.id} X
+                    </button>
+                `
+            }
             const container =  aside.querySelector(`.${input.name}`)
             container.insertAdjacentHTML('beforeend', newElement)
         }
