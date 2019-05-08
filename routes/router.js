@@ -5,7 +5,7 @@ router.get('/', (req,res)=>{
     res.render('index', {page:'./partials/login'})
 })
 
-router.post('/login',(req,res)=>{
+router.post('/loggedin',(req,res)=>{
     if(req.body.username === 'moderator'){
         res.render('index', {page: './partials/moderator'})
     }

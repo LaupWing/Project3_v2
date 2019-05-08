@@ -1,6 +1,5 @@
 // window.history.pushState("", "", '/visitor');
 const socket = io();
-
 window.addEventListener('load', init)
 function init(){
     const questions = document.querySelectorAll('.questions')
@@ -21,18 +20,20 @@ function nextQuestion(){
         action: 'add',
         name: 'invisible'
     }
-    const nextEl = Number(this.parentElement.classList[1].slice(1))+1
-    const setNext = document.querySelector(`.questions.v${nextEl}`)
+    const nextElIndex = Number(this.parentElement.classList[1].slice(1))+1
+    const setNext = document.querySelector(`.questions.v${nextElIndex}`)
     const setting3 = { 
         action: 'remove',
         name: 'invisible'
     }
     classChange(questions1, setting1)
     classChange(questions2, setting2)
+    setChoice(this)
     if(setNext!==null){
         classChange(setNext, setting3)
+    }else{
+        socket.emit('profile', makeProfileObj())
     }
-    setChoice(this)
 }
 
 function setChoice(el){
@@ -86,4 +87,14 @@ function classChange(el, setting){
     }
 }
 
+function makeProfileObj(){
+    const aside = document.querySelector('aside')
+    const languages = Array.from(aside.querySelectorAll('.language button'))
+    return {
+        name: aside.querySelector('.fullName button').textContent.trim().slice(0, -1).trim(),
+        work: aside.querySelector('.work button').textContent.trim().slice(0, -1).trim(),
+        languages: languages.map(button=>button.textContent.trim().slice(0, -1).trim()),
+        location: aside.querySelector('.location button').textContent.trim().slice(0, -1).trim()
+    }
+}
 

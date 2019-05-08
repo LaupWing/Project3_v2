@@ -39,6 +39,27 @@ select{
     align-items: center;
     background: #3EDFB4;
 }
+/* Moderator */
+.container.moderator{
+    background: white;
+}
+.moderator .profiles{
+    background: #F0F0F2;
+    height: 100%;
+    box-shadow: none;
+    width: 25%;   
+    border-radius: 0;
+}
+.moderator .chat{
+    width: 50%;
+    height: 100%;
+    background: orange;
+}
+.moderator form{
+    width: 25%;
+    height: 100%;
+    background: black;
+}
 /* States */
 .invisible{
     display: none !important;
