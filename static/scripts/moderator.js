@@ -66,17 +66,32 @@ function addingEvents(){
 
 function seeChat(){
     const containerProfiles = document.querySelectorAll('ul.profiles li')
+    const allChats          = document.querySelectorAll('.chat-container .chat')
+    const id                = this.classList[0]
+    const allForms          = document.querySelectorAll('.form-container form')
     containerProfiles.forEach(profile=>profile.classList.remove('active'))
     this.classList.add('active')
-    const allChats = document.querySelectorAll('.chat-container .chat')
+
     allChats.forEach(chat=>{
         if(!Array.from(chat.classList).includes('invisible')) chat.classList.add('invisible')
     })
     allChats.forEach(chat=>{
-        if(this.classList[0] === chat.id){
+        if(id === chat.id){
             chat.classList.remove('invisible')
         }
     })
+
+    allForms.forEach(form=>{
+        if(!Array.from(form.classList).includes('invisible')) form.classList.add('invisible')
+    })
+    allForms.forEach(form=>{
+        const formId = form.classList[1]
+        console.log(id, formId)
+        if(id === formId){
+            form.classList.remove('invisible')
+        }
+    })
+
 }
 
 function addingChat(id){
@@ -99,12 +114,47 @@ function addingChat(id){
     </div>
     `
     document.querySelector('.chat-container').insertAdjacentHTML('beforeend', newElement)
+    addingForm(id)
+}
+
+function addingForm(id){
+    const newElement=`
+    <form class="user-info id${id} invisible" action="">
+        <div class="fullName">
+            <label for="">Name</label>
+            <input type="text">
+        </div>
+        <div class="work">
+            <label for="">Work</label>
+            <input type="text">
+        </div>
+        <div class="language">
+            <label for="">Programmeertalen</label>
+            <input type="text">
+        </div>
+        <div class="location">
+            <label for="">Locatie</label>
+            <input type="text">
+        </div>
+    </form>
+    `
+    document.querySelector('.form-container').insertAdjacentHTML('beforeend', newElement)
 }
 
 function setProfile(obj){
     console.log(obj)
     if(obj.type === 'fullName'){
-        document.querySelector(`.id${obj.id}`).textContent = `${obj.value} is bezig met invullen`
-        document.querySelector(`#id${obj.id} h2`).textContent = obj.value
+        document.querySelector(`li.id${obj.id}`).textContent = `${obj.value} is bezig met invullen`
+        document.querySelector(`.chat#id${obj.id} h2`).textContent = obj.value
+        document.querySelector(`.form-container .id${obj.id} .fullName input`).value = obj.value
+    }
+    else if(obj.type === 'work'){
+        document.querySelector(`.form-container .id${obj.id} .work input`).value = obj.value
+    }
+    else if(obj.type === 'language'){
+        document.querySelector(`.form-container .id${obj.id} .language input`).value = obj.value
+    }
+    else if(obj.type === 'location'){
+        document.querySelector(`.form-container .id${obj.id} .location input`).value = obj.value
     }
 }
