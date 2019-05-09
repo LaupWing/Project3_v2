@@ -5,7 +5,6 @@ window.addEventListener('load', init)
 
 function init(){
     socket.emit('all users', 'moderator')
-    socket.emit('get profiles')
     socket.on('send profiles', (profileArray)=>{console.log(profileArray)})
     // const form = document.querySelector('.chat form')
     // form.addEventListener('submit', sendMsgToUser)
@@ -14,7 +13,8 @@ function init(){
 
 socket.on('notify', (id)=>newVisitor(id))
 socket.on('set profile', (obj)=>setProfile(obj))
-
+socket.on('user finished', (obj)=>userFinished(obj))
+socket.on('sending users msg', (obj)=>setUsersMsg(obj))
 
 function sendMsgToUser(){
     event.preventDefault()
@@ -157,4 +157,24 @@ function setProfile(obj){
     else if(obj.type === 'location'){
         document.querySelector(`.form-container .id${obj.id} .location input`).value = obj.value
     }
+}
+
+function userFinished(obj){
+    const chatContainer = document.querySelector(`.chat#id${obj.id}`)
+    chatContainer.removeChild(chatContainer.querySelector('.overlay'))
+    chatContainer.querySelector('.user h2').textContent = obj.fullName
+    chatContainer.querySelector('.user p').textContent = obj.location
+    const user = document.querySelector(`ul.profiles li.id${obj.id}`)
+    user.classList.remove('busy')
+    user.textContent = obj.fullName
+}
+
+function setUsersMsg(obj){
+    const container = document.querySelector(`.chat#id${obj.id} messages`)
+    const newElement = `
+        <li class="visitor-message">
+            <p>${obj.msg}</p>
+        </li>
+    `
+    container.insertAdjacentHTML('beforeend', newElement)
 }

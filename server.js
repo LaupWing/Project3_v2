@@ -24,11 +24,6 @@ app
     .use(bodyParser.json())
     .use('/', router)
 
-function newProfile(profileObj, id){
-    const profile = profileObj
-    profile.id = id
-    profileArray.push(profile)
-}
 
 function sendMsgToUser(obj){
     io.to(obj.id)
@@ -69,7 +64,27 @@ function addPropertyToUser(obj){
             person[obj.type] = obj.value
         }
     })
-    console.log(currentOnline)
+}
+
+function visitorFinished(id){
+    currentOnline.forEach(user=>{
+        if(user.type === 'moderator'){
+            const userObj = currentOnline.find(user2=>user2.id===id)
+            io.sockets.connected[user.id].emit('user finished', userObj);
+        }
+    })
+}
+
+function sendMsgToMod(msg, id){
+    currentOnline.forEach(user=>{
+        if(user.type === 'moderator'){
+            const msgObj = {
+                id,
+                msg
+            }
+            io.sockets.connected[user.id].emit('sending users msg', msgObj);
+        }
+    })
 }
 
 io.on('connection', (socket)=>{
@@ -86,12 +101,12 @@ io.on('connection', (socket)=>{
         }
     })
 
-    // Users profile(old version)
-    socket.on('profile', (profileObj)=>newProfile(profileObj, socket.id))
-    socket.on('get profiles', ()=>socket.emit('send profiles', profileArray))
-
     // Room for vistor to chat with moderator 
-    socket.on('new room',()=>socket.join(socket.id))
+    socket.on('new room',()=>{
+        socket.join(socket.id)
+        visitorFinished(socket.id)
+    })
+    socket.on('send msg to moderator', (msg)=>sendMsgToMod(msg,socket.id))
     socket.on('msg to user',(userObj)=>sendMsgToUser(userObj))
     socket.on('disconnect', ()=>console.log(`User with Id ${socket.id} has disconnected`))
 })

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container visitor">
     <aside>
         <div class="heading">
             <h2>Profile</h2>
@@ -19,5 +19,15 @@
     <main id="questions">
         <%- include(partial) %>
     </main>
+    <div class="chat">
+        <div class="header">
+            <h2>Moderator</h2>
+        </div>
+        <ul class="messages"></ul>
+        <form action="" class="sendMsg">
+            <input type="text">
+            <button type="submit">Send</button>
+        </form>
+    </div>
 </div>
 <script src="scripts/visitor.js"></script>

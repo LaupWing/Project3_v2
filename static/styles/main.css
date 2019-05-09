@@ -40,7 +40,8 @@ select{
     align-items: center;
     background: #3EDFB4;
 }
-/* Moderator */
+/* Moderator 
+----------------------------*/
 .container.moderator{
     background: white;
 }
@@ -51,6 +52,8 @@ select{
     box-shadow: none;
     width: 25%;   
     border-radius: 0;
+    overflow-y: scroll;
+
 }
 .moderator .profiles li{
     padding: 30px;
@@ -131,6 +134,23 @@ select{
     width: 100%;
     display: flex;
 }
+
+.moderator .chat .messages li.visitor-message{
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+}
+.moderator .chat .messages li p{
+    display: inline-block;
+    padding: 9px 20px;
+    margin: 10px;
+    right: 0;
+    border-radius: 20px;
+}
+.moderator .chat .messages li.visitor-message{
+    background: #FFD259;
+}
+
 .moderator form.sendMsg input[type='text']{
     width: 80%;
     padding: 10px;
@@ -210,7 +230,8 @@ select{
 .active{
     background: #FFD259;
 }
-/* Login scherm */
+/* Login scherm 
+---------------------------*/
 .login{
     background: #4B2FA2;
     color: white;
@@ -267,7 +288,8 @@ aside{
     position: fixed;
     left: 0;
 }
-/* Visitor */
+/* Visitor 
+---------------------------*/
 .questions{
     transition: 1s;
 }
@@ -326,8 +348,81 @@ aside{
 .questions.v1 input[type='text']{
     padding: 5px;
 }
+/* Chat of the visitor Styling */
+.container.visitor .chat{
+    background: white;
+    width: 700px;
+    margin-top: 40px;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0px 3px 17px 0px rgba(0,0,0,0.45);
+    display: none;
+    opacity: 0;
+}
+.container.visitor .chat.active{
+    display: block;
+    animation: chatAppear1 forwards 2s;
+    animation-delay: 0.5s;
+}
 
-
+@keyframes chatAppear1{
+    from{
+        transform: translate(0,100px);
+        opacity: 0;
+    }
+    to{
+        transform: translate(0,0);
+        opacity: 1;
+    }
+}
+.container.visitor .header{
+    padding: 20px;
+    padding-left: 40px;
+    background: #4B2FA2;
+    color: white;
+    border-radius: 20px 20px 0 0;
+}
+.container.visitor ul.messages{
+    width: 100%;
+    height: 0px;
+}
+.container.visitor ul.messages li.users-message{
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+}
+.container.visitor ul.messages li p{
+    display: inline-block;
+    padding: 9px 20px;
+    margin: 10px;
+    right: 0;
+    border-radius: 20px;
+}
+.container.visitor ul.messages li.users-message p{
+    background: #FFD259;
+}
+.container.visitor .chat.active ul.messages{
+    animation: chatAppear2 2s forwards;
+    animation-delay: 2.5s;
+}
+@keyframes chatAppear2{
+    from{
+        height: 0;
+    }
+    to{
+        height: 520px;
+    }
+}
+.container.visitor form.sendMsg{
+    display: flex;
+    width: 100%;
+}
+.container.visitor form.sendMsg input{
+    width: 80%;
+    padding: 10px;
+}
+.container.visitor form.sendMsg button{
+    width: 20%;
+}
 /* Aside Profile component */
 aside{
     position: fixed;

@@ -14,6 +14,7 @@ function init(){
     questions.forEach(question=>{
         question.querySelector('button').addEventListener('click', nextQuestion)
     })
+    document.querySelector('.chat form').addEventListener('submit', sendChatMsg)
 }
 
 
@@ -40,7 +41,7 @@ function nextQuestion(){
     if(setNext!==null){
         classChange(setNext, setting3)
     }else{
-        socket.emit('profile', makeProfileObj())
+        document.querySelector('.chat').classList.add('active')
         socket.emit('new room')
     }
 }
@@ -59,6 +60,7 @@ function setChoice(el){
                 `
         const container =  aside.querySelector(`.${name}`)
         container.insertAdjacentHTML('beforeend', newElement)
+        socket.emit('notify moderator',{type: name, value}) 
     }
     userInput.forEach(input=>{
         if(input.checked || input.type === 'text'){
@@ -97,14 +99,16 @@ function classChange(el, setting){
     }
 }
 
-function makeProfileObj(){
-    const aside = document.querySelector('aside')
-    const languages = Array.from(aside.querySelectorAll('.language button'))
-    return {
-        name: aside.querySelector('.fullName button').textContent.trim().slice(0, -1).trim(),
-        work: aside.querySelector('.work button').textContent.trim().slice(0, -1).trim(),
-        languages: languages.map(button=>button.textContent.trim().slice(0, -1).trim()),
-        location: aside.querySelector('.location button').textContent.trim().slice(0, -1).trim()
-    }
+function sendChatMsg(){
+    event.preventDefault()
+    const value = document.querySelector('.chat form.sendMsg input').value
+    document.querySelector('.chat form.sendMsg input').value = ''
+    const container = document.querySelector('.chat ul.messages')
+    const newElement  = `
+        <li class='users-message'>
+            <p>${value}</p>
+        </li>
+    `
+    socket.emit('send msg to moderator', value)
+    container.insertAdjacentHTML('beforeend', newElement)
 }
-
