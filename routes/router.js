@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const {currentOnline} = require('../server')
 
 router.get('/', (req,res)=>{
     res.render('index', {page:'./partials/login'})
@@ -7,7 +8,7 @@ router.get('/', (req,res)=>{
 
 router.post('/loggedin',(req,res)=>{
     if(req.body.username === 'moderator'){
-        const profileArray = require('../server')
+        const {profileArray} = require('../server')
         res.render('index', {page: './partials/moderator', data: profileArray})
     }
     else if (req.body.username === 'visitor'){

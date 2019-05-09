@@ -8,6 +8,8 @@ socket.on('sending msg', (msg)=>{
 
 
 function init(){
+    socket.emit('all users', 'visitor')
+    socket.emit('notify moderator')
     const questions = document.querySelectorAll('.questions')
     questions.forEach(question=>{
         question.querySelector('button').addEventListener('click', nextQuestion)
@@ -62,17 +64,20 @@ function setChoice(el){
         if(input.checked || input.type === 'text'){
             let newElement = ''
             if(input.type === 'text'){
+                // Name
                 newElement = `
                     <button class='user-input'>
                         ${input.value} X
                     </button>
-                `    
+                ` 
+                socket.emit('notify moderator',{type: input.name, value:input.value})   
             }else{
                 newElement = `
                     <button class='user-input'>
                         ${input.id} X
                     </button>
                 `
+                socket.emit('notify moderator',{type: input.name, value:input.id})
             }
             const container =  aside.querySelector(`.${input.name}`)
             container.insertAdjacentHTML('beforeend', newElement)
