@@ -13,6 +13,7 @@ header{
     width: 100%;
     top:0;
     background: #4B2FA2;
+    z-index: 5;
 }
 select{
     padding: 5px;
@@ -44,27 +45,70 @@ select{
     background: white;
 }
 .moderator .profiles{
+    padding-top: 55px;
     background: #F0F0F2;
     height: 100%;
     box-shadow: none;
     width: 25%;   
     border-radius: 0;
 }
+.moderator .profiles li{
+    padding: 30px;
+    border-bottom: 2px rgba(0,0,0,0.1) solid;
+    cursor: pointer;
+    transition: .25s;
+}
+.moderator .profiles li:hover{
+    background: #FFD259;
+    color: #4B2FA2;
+}
+.moderator .chat.invisible{
+    width: 0;
+    height: 0;
+}
 .moderator .chat{
     width: 50%;
     height: 100%;
-    background: orange;
+    background: white ;
+    position: relative;
+    z-index: 1;
 }
-.moderator form{
+.moderator .chat .user{
+    margin-top: 55px;
+    background: white;
+    padding: 20px;
+    border-bottom: #F0F0F2 solid 2px;
+}
+.moderator form.user-info{
     width: 25%;
     height: 100%;
     background: black;
 }
+.moderator form.sendMsg{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+}
+.moderator form.sendMsg input[type='text']{
+    width: 80%;
+    padding: 10px;
+}
+.moderator form.sendMsg button{
+    width: 20%;
+    background: #3EDFB4;
+    border: none;
+    color: white;
+}
+
 /* States */
 .invisible{
     display: none !important;
     height: 0;
     opacity: 0;
+}
+.active{
+    background: #FFD259;
 }
 /* Login scherm */
 .login{

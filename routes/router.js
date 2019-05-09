@@ -7,7 +7,8 @@ router.get('/', (req,res)=>{
 
 router.post('/loggedin',(req,res)=>{
     if(req.body.username === 'moderator'){
-        res.render('index', {page: './partials/moderator'})
+        const profileArray = require('../server')
+        res.render('index', {page: './partials/moderator', data: profileArray})
     }
     else if (req.body.username === 'visitor'){
         res.render('index', 

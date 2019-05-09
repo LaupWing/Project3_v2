@@ -1,6 +1,12 @@
 // window.history.pushState("", "", '/visitor');
 const socket = io();
 window.addEventListener('load', init)
+
+socket.on('sending msg', (msg)=>{
+    console.log(msg)
+})
+
+
 function init(){
     const questions = document.querySelectorAll('.questions')
     questions.forEach(question=>{
@@ -33,14 +39,13 @@ function nextQuestion(){
         classChange(setNext, setting3)
     }else{
         socket.emit('profile', makeProfileObj())
+        socket.emit('new room')
     }
 }
 
 function setChoice(el){
     const aside = document.querySelector('aside')
-    const userInput = el.parentElement.querySelectorAll('input')
-    console.log(el.parentElement)
-    console.log(userInput.length)
+    const userInput = el.parentElement.querySelectorAll('input') 
     if(userInput.length===0){
         const select = el.parentElement.querySelector('select')
         const value = select.value

@@ -1,18 +1,27 @@
 <div class="container moderator">
-<div class="profiles">
-
-</div>
-<div class="chat">
-    <div class="user"></div>
-    <div class="message-screen">
-    </div>
+<ul class="profiles">
+    <% data.forEach(person=>{ %>
+        <li  class="<%= person.id %>"><%=person.name%></li>
+    <% }) %>
+</ul>
+<% data.forEach(person=>{ %>
+    <div class="chat" id="<%= person.id %>">
+        <div class="user">
+            <h2><%= person.name %></h2>
+            <p><%= person.location %></p>
+        </div>
+        <div class="messages">
     
-    <div class="message-typing">
+        </div>
+        <form action="" class="sendMsg">
+            <input type="text">
+            <button type="submit">Send</button>
+        </form>
     </div>
-</div>
-<form action="">
-
-</form>
+<% }) %>
+    <form class="user-info" action="">
+    
+    </form>
 </div>
 
 <script src="scripts/moderator.js"></script>
