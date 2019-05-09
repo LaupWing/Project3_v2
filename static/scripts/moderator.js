@@ -6,8 +6,6 @@ window.addEventListener('load', init)
 function init(){
     socket.emit('all users', 'moderator')
     socket.on('send profiles', (profileArray)=>{console.log(profileArray)})
-    // const form = document.querySelector('.chat form')
-    // form.addEventListener('submit', sendMsgToUser)
 }
 
 
@@ -18,20 +16,36 @@ socket.on('sending users msg', (obj)=>setUsersMsg(obj))
 
 function sendMsgToUser(){
     event.preventDefault()
-    let inputVal = this.querySelector('input').value
-    const lis = Array.from(document.querySelectorAll('li'))
-    const id = lis.map(li=>{
-        console.log(li.classList)
-        if(!Array.from(li.classList).includes('invisible')){
+    const allLi = Array.from(document.querySelectorAll('ul.profiles li'))
+    console.log(allLi)
+    // const id = allLi.map(li=>{
+    //     if(li.classList[1]==='active'){
+    //         console.log(li.classList)
+    //         return li.classList[0]
+    //     }
+    // })[0]
+    const id = allLi.map(li=>{
+        if(li.classList[1]==='active'){
             return li
         }
-    })[0].id
-    
+    })
+    .filter(li=>li!==undefined)[0]
+    .classList[0]
+    console.log(id)
+    const msg = document.querySelector(`.chat#${id} form.sendMsg input`).value
+    document.querySelector(`.chat#${id} form.sendMsg input`).value = ''
+    const container = document.querySelector(`.chat#${id} .messages`)
+    const newElement = `
+        <li class="mod-msg">
+            <p>${msg}</p>
+        </li>
+    `
     const msgObj = {
-        msg: inputVal,
-        id
+        msg,
+        id: id.slice(2)
     }
-    socket.emit('msg to user', msgObj) 
+    socket.emit('send msg to user', msgObj)
+    container.insertAdjacentHTML('beforeend', newElement)
 }
 
 function openChat(){
@@ -86,7 +100,6 @@ function seeChat(){
     })
     allForms.forEach(form=>{
         const formId = form.classList[1]
-        console.log(id, formId)
         if(id === formId){
             form.classList.remove('invisible')
         }
@@ -142,7 +155,6 @@ function addingForm(id){
 }
 
 function setProfile(obj){
-    console.log(obj)
     if(obj.type === 'fullName'){
         document.querySelector(`li.id${obj.id}`).textContent = `${obj.value} is bezig met invullen`
         document.querySelector(`.chat#id${obj.id} h2`).textContent = obj.value
@@ -166,11 +178,16 @@ function userFinished(obj){
     chatContainer.querySelector('.user p').textContent = obj.location
     const user = document.querySelector(`ul.profiles li.id${obj.id}`)
     user.classList.remove('busy')
+    const allForm = document.querySelectorAll('.chat form')
+    allForm.forEach(form=>{
+        form.removeEventListener('submit', sendMsgToUser)
+        form.addEventListener('submit', sendMsgToUser)
+    })
     user.textContent = obj.fullName
 }
 
 function setUsersMsg(obj){
-    const container = document.querySelector(`.chat#id${obj.id} messages`)
+    const container = document.querySelector(`.chat#id${obj.id} .messages`)
     const newElement = `
         <li class="visitor-message">
             <p>${obj.msg}</p>

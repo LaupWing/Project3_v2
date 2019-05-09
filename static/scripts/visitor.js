@@ -2,9 +2,7 @@
 const socket = io();
 window.addEventListener('load', init)
 
-socket.on('sending msg', (msg)=>{
-    console.log(msg)
-})
+socket.on('sending msg', (msg)=>setModMsg(msg))
 
 
 function init(){
@@ -110,5 +108,15 @@ function sendChatMsg(){
         </li>
     `
     socket.emit('send msg to moderator', value)
+    container.insertAdjacentHTML('beforeend', newElement)
+}
+
+function setModMsg(msg){
+    const container = document.querySelector('.chat ul.messages')
+    const newElement  = `
+        <li class='mod-message'>
+            <p>${msg}</p>
+        </li>
+    `
     container.insertAdjacentHTML('beforeend', newElement)
 }

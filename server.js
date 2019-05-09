@@ -26,6 +26,7 @@ app
 
 
 function sendMsgToUser(obj){
+    console.log(obj)
     io.to(obj.id)
         .emit('sending msg', obj.msg)
 }
@@ -49,14 +50,6 @@ function notifyMod(value){
     })
 }
 
-function setUpProfile(obj){
-    console.log(currentOnline)
-    console.log(obj)
-    addPropertyToUser(obj)
-    if(obj.type === 'name'){
-        
-    }
-}
 
 function addPropertyToUser(obj){
     currentOnline.forEach(person=>{
@@ -107,7 +100,7 @@ io.on('connection', (socket)=>{
         visitorFinished(socket.id)
     })
     socket.on('send msg to moderator', (msg)=>sendMsgToMod(msg,socket.id))
-    socket.on('msg to user',(userObj)=>sendMsgToUser(userObj))
+    socket.on('send msg to user', (msgObj=>sendMsgToUser(msgObj)))
     socket.on('disconnect', ()=>console.log(`User with Id ${socket.id} has disconnected`))
 })
 

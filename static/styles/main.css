@@ -52,7 +52,7 @@ select{
     box-shadow: none;
     width: 25%;   
     border-radius: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
 
 }
 .moderator .profiles li{
@@ -134,11 +134,15 @@ select{
     width: 100%;
     display: flex;
 }
-
-.moderator .chat .messages li.visitor-message{
+.moderator .chat .messages li{
     list-style: none;
     display: flex;
+}
+.moderator .chat .messages li.visitor-message{
     justify-content: flex-start;
+}
+.moderator .chat .messages li.mod-msg{
+    justify-content: flex-end;
 }
 .moderator .chat .messages li p{
     display: inline-block;
@@ -147,10 +151,13 @@ select{
     right: 0;
     border-radius: 20px;
 }
-.moderator .chat .messages li.visitor-message{
+.moderator .chat .messages li.visitor-message p{
     background: #FFD259;
 }
-
+.moderator .chat .messages li.mod-msg p{
+    background: #4B2FA2;
+    color: white;
+}
 .moderator form.sendMsg input[type='text']{
     width: 80%;
     padding: 10px;
@@ -385,10 +392,15 @@ aside{
     width: 100%;
     height: 0px;
 }
-.container.visitor ul.messages li.users-message{
+.container.visitor ul.messages li{
     list-style: none;
     display: flex;
+}
+.container.visitor ul.messages li.users-message{
     justify-content: flex-end;
+}
+.container.visitor ul.messages li.mod-message{
+    justify-content: flex-start;
 }
 .container.visitor ul.messages li p{
     display: inline-block;
@@ -399,6 +411,10 @@ aside{
 }
 .container.visitor ul.messages li.users-message p{
     background: #FFD259;
+}
+.container.visitor ul.messages li.mod-message p{
+    background: #4B2FA2;
+    color: white;
 }
 .container.visitor .chat.active ul.messages{
     animation: chatAppear2 2s forwards;
