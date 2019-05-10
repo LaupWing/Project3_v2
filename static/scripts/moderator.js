@@ -5,7 +5,6 @@ window.addEventListener('load', init)
 
 function init(){
     socket.emit('all users', 'moderator')
-    socket.on('send profiles', (profileArray)=>{console.log(profileArray)})
 }
 
 
